@@ -1,0 +1,29 @@
+[project]
+name = "mcp7zop"
+version = "0.8.7"
+description = "Mcp7zOp - A Local MCP server for operating 7-zip CUI interface"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "kanok-one", email = "zervoid77@gmail.com" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp>=2.10.6",
+    "anyio>=4.9.0",
+    "twisted>=25.5.0",
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[dependency-groups]
+dev = [
+    "debugpy>=1.8.15",
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "pytest-tornasync>=0.6.0.post2",
+    "pytest-trio>=0.8.0",
+    "pytest-twisted>=1.14.3",
+]
