@@ -1,0 +1,17 @@
+{
+    "servers": {
+        "mcp7zop": {
+            "type": "stdio",
+            "command": "uv",
+            "args": [
+                "--directory",
+                "${workspaceFolder}",
+                "run",
+                "-m",
+                "mcp7zop",
+                "--mcp-server"
+            ]
+        }
+    },
+    "inputs": []
+}
