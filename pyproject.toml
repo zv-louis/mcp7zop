@@ -1,6 +1,6 @@
 [project]
 name = "mcp7zop"
-version = "0.8.7"
+version = "0.8.8"
 description = "Mcp7zOp - A Local MCP server for operating 7-zip CUI interface"
 readme = "README.md"
 license = { text = "MIT" }
@@ -27,3 +27,6 @@ dev = [
     "pytest-trio>=0.8.0",
     "pytest-twisted>=1.14.3",
 ]
+
+[project.scripts]
+mcp7zop = "mcp7zop.__main__:main"
