@@ -6,27 +6,27 @@ Mcp7zOp - A Local MCP server for operating 7-zip CUI interface
 
 <!-- TOC tocDepth:2..4 chapterDepth:2..6 -->
 
-- [Mcp7zOp](#mcp7zop)
-  - [1. 概要](#1-概要)
-  - [2. 機能](#2-機能)
-    - [2-1. アーカイブ操作](#2-1-アーカイブ操作)
-    - [2-2. ファイルシステム操作](#2-2-ファイルシステム操作)
-  - [3. 必要環境](#3-必要環境)
-    - [3-1. 動作要件](#3-1-動作要件)
-    - [3-2. 7-Zipのインストール](#3-2-7-zipのインストール)
-  - [4. 使用方法](#4-使用方法)
-    - [4-1. MCPサーバーとして実行する](#4-1-mcpサーバーとして実行する)
-    - [4-2. パッケージを生成する](#4-2-パッケージを生成する)
-    - [4-3. 提供されるtool一覧](#4-3-提供されるtool一覧)
-      - [`mcp7zop_make_archive`](#mcp7zop_make_archive)
-      - [`mcp7zop_extract_archive`](#mcp7zop_extract_archive)
-      - [`mcp7zop_get_archive_item_list`](#mcp7zop_get_archive_item_list)
-      - [`mcp7zop_replace_archive_items`](#mcp7zop_replace_archive_items)
-      - [`mcp7zop_remove_archive_items`](#mcp7zop_remove_archive_items)
-      - [`mcp7zop_get_dir_item_list`](#mcp7zop_get_dir_item_list)
-      - [`mcp7zop_get_path_item_info`](#mcp7zop_get_path_item_info)
-      - [`mcp7zop_path_is_exist`](#mcp7zop_path_is_exist)
-  - [5.ライセンス](#5ライセンス)
+- [1. 概要](#1-概要)
+- [2. 機能](#2-機能)
+  - [2-1. アーカイブ操作](#2-1-アーカイブ操作)
+  - [2-2. ファイルシステム操作](#2-2-ファイルシステム操作)
+- [3. 必要環境](#3-必要環境)
+  - [3-1. 動作要件](#3-1-動作要件)
+  - [3-2. 7-Zipのインストール](#3-2-7-zipのインストール)
+- [4. インストール/使用方法](#4-インストール使用方法)
+  - [4-1. uvのインストール](#4-1-uvのインストール)
+  - [4-2. uv環境へのパッケージ追加](#4-2-uv環境へのパッケージ追加)
+  - [4-3. MCPサーバーとして登録](#4-3-mcpサーバーとして登録)
+- [5. 提供されるtool一覧](#5-提供されるtool一覧)
+  - [`mcp7zop_make_archive`](#mcp7zop_make_archive)
+  - [`mcp7zop_extract_archive`](#mcp7zop_extract_archive)
+  - [`mcp7zop_get_archive_item_list`](#mcp7zop_get_archive_item_list)
+  - [`mcp7zop_replace_archive_items`](#mcp7zop_replace_archive_items)
+  - [`mcp7zop_remove_archive_items`](#mcp7zop_remove_archive_items)
+  - [`mcp7zop_get_dir_item_list`](#mcp7zop_get_dir_item_list)
+  - [`mcp7zop_get_path_item_info`](#mcp7zop_get_path_item_info)
+  - [`mcp7zop_path_is_exist`](#mcp7zop_path_is_exist)
+- [6.ライセンス](#6ライセンス)
 
 <!-- /TOC -->
 
@@ -86,54 +86,48 @@ Mcp7zOpは、7-Zipのコマンドラインツール操作を行うMCP (Model Con
 }
 ```
 
-## 4. 使用方法
+## 4. インストール/使用方法
+
+### 4-1. uvのインストール
 
 このプロジェクトはパッケージマネージャに uv を使用しています。  
 下記よりインストールしてください.  
 
 - [uv - https://docs.astral.sh/uv/](https://docs.astral.sh/uv/)
 
-### 4-1. MCPサーバーとして実行する
+### 4-2. uv環境へのパッケージ追加
 
-プロジェクトディレレクトリを指定して uv run コマンドを使用して実行します。  
-
-```bash
-uv run (--directory {path_to_this_project_dir}) -m mcp7zop --mcp-server
-```
-
-python環境にモジュールのパッケージをインストールした場合は、以下のようにしても実行できます。  
+uv環境にgitリポジトリから直接 mcp7zop パッケージを追加します.  
+gitを利用してインストールするため, gitコマンドが使用可能な環境で下記のコマンドを実行してください.  
 
 ```bash
-python -m mcp7zop --mcp-server
+uv tool install git+{リポジトリのURL}
 ```
 
-コマンドをAgentツールのmcpServersに登録します.
+インストール後、mcp7zop コマンドが利用できるようになります.  
+以下のコマンドを実行してみます.  
+
+```bash
+mcp7zop
+```
+
+mcpツール一覧が表示されれば正常にインストールされています.
+
+### 4-3. MCPサーバーとして登録
+
+コマンドをAgentツールのmcpServersに登録します.  
+mcpサーバの登録方法はAgentツールにより異なりますので, Agentのドキュメントを参照してください.  
+以下は設定ファイル例です.
 
 ```json
 {
     // Agentツールの設定ファイル例. 
     // ** 設定方法はAgentのドキュメントを参照してください。**
     "mcpServers": { 
-        // uvコマンドの例
         "mcp7zop": {
             "type": "stdio",
-            "command": "uv",
+            "command": "mcp7zop",
             "args": [
-                "--directory",
-                "${path_to_this_project_dir}",
-                "run",
-                "-m",
-                "mcp7zop",
-                "--mcp-server"
-            ]
-        },
-        // python環境にインストールされたモジュールを使用する例
-        "mcp7zop_python": {
-            "type": "stdio",
-            "command": "python", // pythonインタプリタのパス
-            "args": [
-                "-m",
-                "mcp7zop",
                 "--mcp-server"
             ]
         }
@@ -141,17 +135,9 @@ python -m mcp7zop --mcp-server
 }
 ```
 
-### 4-2. パッケージを生成する
+## 5. 提供されるtool一覧
 
-buildコマンドを使用してパッケージを生成することができます。
-
-```bash
-uv build
-```
-
-### 4-3. 提供されるtool一覧
-
-#### `mcp7zop_make_archive`
+### `mcp7zop_make_archive`
 
 複数のファイルやディレクトリからアーカイブを作成します。
 
@@ -162,7 +148,7 @@ uv build
 
 **戻り値:** 作成されたアーカイブファイルのパス
 
-#### `mcp7zop_extract_archive`
+### `mcp7zop_extract_archive`
 
 アーカイブファイルを展開します。
 
@@ -173,7 +159,7 @@ uv build
 
 **戻り値:** 展開されたファイルのパス一覧
 
-#### `mcp7zop_get_archive_item_list`
+### `mcp7zop_get_archive_item_list`
 
 アーカイブファイル内のアイテム一覧を取得します。
 
@@ -183,7 +169,7 @@ uv build
 
 **戻り値:** アイテム情報を含む辞書のリスト
 
-#### `mcp7zop_replace_archive_items`
+### `mcp7zop_replace_archive_items`
 
 アーカイブにファイルやディレクトリを追加または置換します。
 
@@ -194,7 +180,7 @@ uv build
 
 **戻り値:** 更新されたアーカイブファイルのパス
 
-#### `mcp7zop_remove_archive_items`
+### `mcp7zop_remove_archive_items`
 
 アーカイブから指定したアイテムを削除します。
 
@@ -205,7 +191,7 @@ uv build
 
 **戻り値:** 更新されたアーカイブファイルのパス
 
-#### `mcp7zop_get_dir_item_list`
+### `mcp7zop_get_dir_item_list`
 
 ディレクトリ内のアイテム一覧を取得します。
 
@@ -215,7 +201,7 @@ uv build
 
 **戻り値:** アイテム名とタイプを含む辞書のリスト
 
-#### `mcp7zop_get_path_item_info`
+### `mcp7zop_get_path_item_info`
 
 パスの詳細情報を取得します。
 
@@ -225,7 +211,7 @@ uv build
 
 **戻り値:** アイテム情報を含む辞書
 
-#### `mcp7zop_path_is_exist`
+### `mcp7zop_path_is_exist`
 
 パスの存在を確認します。
 
@@ -237,7 +223,7 @@ uv build
 
 ---
 
-## 5.ライセンス
+## 6.ライセンス
 
 このプロジェクトはMITライセンスの下で公開されています。  
 詳細は[LICENSE](LICENSE)ファイルを参照してください。  

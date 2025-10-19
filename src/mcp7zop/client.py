@@ -10,7 +10,9 @@ async def test_server(mcp: FastMCP):
     async with Client(transport=transport) as client:
         result = await client.list_tools()
         for tool in result:
+            print("--------------------------------------------------------------------")
             print(f"'{tool.name}' : {tool.description}")
+            print("")
 
 # helper for running the test
 def mcp_server_test(mcp: FastMCP):
