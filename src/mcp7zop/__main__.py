@@ -8,7 +8,7 @@ from fastmcp import FastMCP
 # MCPサーバーとして動作させる
 def run_as_mcp_server(mcp: FastMCP):
     # MCPサーバーを起動
-    mcp.run(transport="stdio")
+    mcp.run(transport="stdio", show_banner=False)
 
 # メイン関数
 def main():

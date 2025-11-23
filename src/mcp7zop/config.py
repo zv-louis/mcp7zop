@@ -29,17 +29,18 @@ def get_logger() -> logging.Logger:
     """
     if logger_instance is None:
         # Set up the logger
-        stdout_handler = logging.StreamHandler(stream=sys.stdout)
-        stdout_handler.setLevel(logging.DEBUG)
-        stdout_handler.addFilter(lambda record: record.levelno <= logging.INFO)
-
         stderr_handler = logging.StreamHandler(stream=sys.stderr)
         stderr_handler.setLevel(logging.WARNING)
+        # stderr_handler.addFilter(lambda record: record.levelno <= logging.INFO)
+        formatter = logging.Formatter(
+            fmt="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
+        )
+        stderr_handler.setFormatter(formatter)
 
         # ロガーにハンドラを設定する
         logger_instance = logging.getLogger("mcp7zop")
-        logger_instance.setLevel(logging.DEBUG)
-        logger_instance.addHandler(stdout_handler)
+        logger_instance.setLevel(logging.WARNING)
         logger_instance.addHandler(stderr_handler)
 
     return logger_instance
