@@ -16,14 +16,40 @@ def detect_7z_path() -> Path:
     """
     Detect the path to the 7z executable.
     """
-    exe_name = "7z.exe" if sys.platform == "nt" else "7z"
-    # Check if 7z is in the system PATH
-    cfg_7z_path = shutil.which(exe_name)
+    cfg_7z_path = ""
+    isNT = sys.platform == "nt"
+    exe_name = "7z.exe" if isNT else "7z"
+    cfg = get_config()
+    cfg_7z_path = cfg.get("7z_path", exe_name)
+    
+    # secondary check
+    # if the configured path is not valid, try to find it in common locations
     if not cfg_7z_path:
-        cfg = get_config()
-        cfg_7z_path = cfg.get("7z_path", exe_name)
-        if not cfg_7z_path:
-            raise FileNotFoundError(f"7z executable not found at {cfg_7z_path}")
+        # Check if 7z is in the system PATH
+        cfg_7z_path = shutil.which(exe_name)
+
+    # tertiary check
+    if not cfg_7z_path:
+        # Check common installation paths
+        common_paths = []
+        if isNT:
+            common_paths = [
+                Path("C:/Program Files/7-Zip/7z.exe"),
+                Path("C:/Program Files (x86)/7-Zip/7z.exe"),
+            ]
+        else:
+            common_paths = [
+                Path("/usr/bin/7z"),
+                Path("/usr/local/bin/7z"),
+                Path("/snap/bin/7z"),
+            ]
+        for path in common_paths:
+            if path.exists():
+                cfg_7z_path = str(path)
+                break
+
+    if not cfg_7z_path:
+        raise FileNotFoundError(f"7z executable not found at {cfg_7z_path}")
     return Path(cfg_7z_path).resolve()
 
 # -------------------------------------------------------------------------------------------
