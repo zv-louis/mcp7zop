@@ -1,7 +1,11 @@
 # encoding : utf-8
 
-import os
-import json
-import shutil
-from fastmcp import FastMCP
+import sys
+import io
 
+# workaround for antigravity issues on Windows
+if sys.platform.startswith("win"):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer,
+                                encoding="utf-8",
+                                newline="\n",
+                                write_through=True)
