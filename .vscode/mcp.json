@@ -1,6 +1,6 @@
 {
     "servers": {
-        "mcp7zop": {
+        "mcp7zop-ws": {
             "type": "stdio",
             "command": "uv",
             "args": [
