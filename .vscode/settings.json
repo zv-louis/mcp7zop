@@ -7,4 +7,8 @@
         "tests"
     ],
     "python.testing.unittestEnabled": false,
+    // プロジェクトルートをPYTHONPATHに追加
+    "terminal.integrated.env.windows": {
+        "PYTHONPATH": "${workspaceFolder}"
+    }
 }
