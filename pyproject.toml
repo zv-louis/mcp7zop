@@ -1,6 +1,6 @@
 [project]
 name = "mcp7zop"
-version = "0.8.13"
+version = "0.8.14"
 description = "Mcp7zOp - A Local MCP server for operating 7-zip CUI interface"
 readme = "README.md"
 license-files = ["LICENSE"]

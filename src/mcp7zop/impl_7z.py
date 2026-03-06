@@ -20,7 +20,7 @@ def detect_7z_path() -> Path:
     isNT = sys.platform == "nt"
     exe_name = "7z.exe" if isNT else "7z"
     cfg = get_config()
-    cfg_7z_path = cfg.get("7z_path", exe_name)
+    cfg_7z_path = cfg.get("7z_path")
     
     # secondary check
     # if the configured path is not valid, try to find it in common locations
